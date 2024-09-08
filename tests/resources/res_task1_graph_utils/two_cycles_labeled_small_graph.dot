@@ -1,0 +1,13 @@
+digraph  {
+1;
+2;
+0;
+3;
+4;
+1 -> 2 [key=0, label=fstG];
+2 -> 0 [key=0, label=fstG];
+0 -> 1 [key=0, label=fstG];
+0 -> 3 [key=0, label=sndG];
+3 -> 4 [key=0, label=sndG];
+4 -> 0 [key=0, label=sndG];
+}
