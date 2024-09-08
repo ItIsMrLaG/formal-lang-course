@@ -32,9 +32,7 @@ def get_graph_meta_from_json(path: Path) -> GraphMeta:
     with open(path) as json_fl:
         data = json.load(json_fl)
         return GraphMeta(
-            nodes_n=data["nodes_n"],
-            edges_n=data["edges_n"],
-            labels=set(data["labels"])
+            nodes_n=data["nodes_n"], edges_n=data["edges_n"], labels=set(data["labels"])
         )
 
 
@@ -42,7 +40,7 @@ def get_graph_meta_from_graph(graph: nx.Graph) -> GraphMeta:
     return GraphMeta(
         nodes_n=graph.number_of_nodes(),
         edges_n=graph.number_of_edges(),
-        labels=set(str(attr["label"]) for (_, _, attr) in graph.edges.data())
+        labels=set(str(attr["label"]) for (_, _, attr) in graph.edges.data()),
     )
 
 
@@ -57,14 +55,8 @@ def get_graph_meta_by_name(name: str) -> GraphMeta:
 
 
 def save_labeled_two_cycles_graph_to_dot(
-        cycle_sizes: Tuple[int, int],
-        labels: Tuple[str, str],
-        path: Path
+    cycle_sizes: Tuple[int, int], labels: Tuple[str, str], path: Path
 ):
-    graph = cd.labeled_two_cycles_graph(
-        cycle_sizes[0],
-        cycle_sizes[1],
-        labels=labels
-    )
+    graph = cd.labeled_two_cycles_graph(cycle_sizes[0], cycle_sizes[1], labels=labels)
 
     _save_graph_to_dot(path, graph)
