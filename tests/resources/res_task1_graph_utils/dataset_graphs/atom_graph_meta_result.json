@@ -1,0 +1,23 @@
+{
+  "nodes_n": 291,
+  "edges_n": 425,
+  "labels": [
+    "comment",
+    "creator",
+    "date",
+    "description",
+    "domain",
+    "format",
+    "imports",
+    "label",
+    "language",
+    "publisher",
+    "range",
+    "seeAlso",
+    "subClassOf",
+    "subPropertyOf",
+    "title",
+    "type",
+    "versionInfo"
+  ]
+}
