@@ -49,8 +49,8 @@ def _save_graph_to_dot(path: Path, graph: nx.Graph):
 
 
 def get_graph_meta_by_name(name: str) -> GraphMeta:
-    path: Path = cd.download(name)
-    graph: nx.MultiDiGraph = cd.graph_from_csv(path)
+    path = cd.download(name)
+    graph = cd.graph_from_csv(path)
     return get_graph_meta_from_graph(graph)
 
 
