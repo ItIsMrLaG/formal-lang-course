@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import Tuple
+from scripts.shared import TESTS
 
 import networkx as nx
 import pytest
@@ -9,7 +10,7 @@ from project.task1_graph_utils import read_graph_from_dot
 from project.task1_graph_utils import save_labeled_two_cycles_graph_to_dot
 from project.task1_graph_utils import get_graph_meta_from_json
 
-PATH_TO_RES_DIR = Path("resources/res_task1_graph_utils")
+PATH_TO_RES_DIR = TESTS / Path("resources/res_task1_graph_utils")
 PATH_TO_RES_DIR_DATASET = PATH_TO_RES_DIR / "dataset_graphs"
 
 
