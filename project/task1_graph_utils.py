@@ -3,6 +3,8 @@ from pathlib import Path
 from typing import Set
 from typing import Tuple
 
+from pyformlang.finite_automaton import NondeterministicFiniteAutomaton
+from pyformlang.finite_automaton import State
 import json
 import cfpq_data as cd
 import networkx as nx
@@ -14,6 +16,7 @@ __all__ = [
     "get_graph_meta_from_json",
     "read_graph_from_dot",
     "get_graph_meta_from_graph",
+    "graph_to_nfa",
 ]
 
 
@@ -60,3 +63,26 @@ def save_labeled_two_cycles_graph_to_dot(
     graph = cd.labeled_two_cycles_graph(cycle_sizes[0], cycle_sizes[1], labels=labels)
 
     _save_graph_to_dot(path, graph)
+
+
+def graph_to_nfa(
+    graph: nx.MultiDiGraph, start_states: Set[int], final_states: Set[int]
+) -> NondeterministicFiniteAutomaton:
+    nfa: NondeterministicFiniteAutomaton = (
+        NondeterministicFiniteAutomaton.from_networkx(
+            graph
+        ).remove_epsilon_transitions()
+    )
+
+    nodes_set = set([int(node) for node in graph.nodes])
+
+    start_nodes = start_states if start_states else nodes_set
+    final_nodes = final_states if final_states else nodes_set
+
+    for node in start_nodes:
+        nfa.add_start_state(State(node))
+
+    for node in final_nodes:
+        nfa.add_final_state(State(node))
+
+    return nfa
