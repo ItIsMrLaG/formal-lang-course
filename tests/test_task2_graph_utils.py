@@ -23,22 +23,39 @@ def get_states_as_int_set(
 ) -> tuple[set[int], set[int], set[int]]:
     st_states = set(int(st.value) for st in nfa.start_states)
     fin_states = set(int(st.value) for st in nfa.final_states)
-    states = set(int(st.value) for st in nfa.final_states)
+    states = set(int(st.value) for st in nfa.states)
     return st_states, fin_states, states
 
 
-@pytest.mark.parametrize("graph_name", ["wc", "atom", "core"])
+@pytest.mark.parametrize(
+    "graph_name,start,final",
+    [
+        pytest.param("wc", {1}, {2}, id="wc_not_all_states_start&final"),
+        pytest.param("wc", set(), set(), id="wc"),
+        pytest.param("atom", {1}, {2}, id="atom_not_all_states_start&final"),
+        pytest.param("atom", set(), set(), id="atom"),
+        pytest.param("core", {1}, {2}, id="core_not_all_states_start&final"),
+        pytest.param("core", set(), set(), id="core"),
+    ],
+)
 def test_graph_to_nfa_with_graph_from_dataset_all_nodes_final_and_start(
     graph_name: str,
+    start: set[int],
+    final: set[int],
 ):
     path = cd.download(graph_name)
     graph = cd.graph_from_csv(path)
     graph_meta = get_graph_meta_from_graph(graph)
 
-    test_nfa = graph_to_nfa(graph, set(), set())
+    test_nfa = graph_to_nfa(graph, start, final)
     start_states, final_states, all_states = get_states_as_int_set(test_nfa)
 
-    assert start_states == final_states == all_states
+    if len(start) == len(final) == 0:
+        assert start_states == final_states == all_states
+    else:
+        assert start_states == start
+        assert final_states == final
+
     assert all_states == set(int(st) for st in graph.nodes)
     assert test_nfa.symbols == graph_meta.labels
 
