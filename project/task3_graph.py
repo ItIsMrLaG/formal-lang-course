@@ -22,7 +22,7 @@ from project.task2_regex_utils import regex_to_dfa
 
 
 def get_edges_from_fa(
-        fa: NondeterministicFiniteAutomaton,
+    fa: NondeterministicFiniteAutomaton,
 ) -> set[tuple[State, Symbol, State]]:
     edges = set()
     for start_state, links in fa.to_dict().items():
@@ -73,8 +73,8 @@ class AdjacencyMatrixFA:
         )
 
         return (
-                functools.reduce(operator.add, matrices, common_matrix)
-                ** self.get_states_number()
+            functools.reduce(operator.add, matrices, common_matrix)
+            ** self.get_states_number()
         )
 
     def __init__(self, fa: NondeterministicFiniteAutomaton):
@@ -107,12 +107,12 @@ class AdjacencyMatrixFA:
 
     @classmethod
     def construct_from_adj_bool_decompress(
-            cls,
-            adj_bool_decompress: dict[Symbol, sp.sparse.csc_matrix],
-            states: set[State],
-            start_states: set[State],
-            final_states: set[State],
-            state_to_idx: dict[State, int],
+        cls,
+        adj_bool_decompress: dict[Symbol, sp.sparse.csc_matrix],
+        states: set[State],
+        start_states: set[State],
+        final_states: set[State],
+        state_to_idx: dict[State, int],
     ):
         self = cls.__new__(cls)
         self.adj_bool_decompress = adj_bool_decompress
@@ -154,7 +154,7 @@ class AdjacencyMatrixFA:
 
 
 def intersect_automata(
-        automaton1: AdjacencyMatrixFA, automaton2: AdjacencyMatrixFA
+    automaton1: AdjacencyMatrixFA, automaton2: AdjacencyMatrixFA
 ) -> AdjacencyMatrixFA:
     n, m = automaton1.get_states_number(), automaton2.get_states_number()
     _new_states = [
@@ -198,7 +198,7 @@ def intersect_automata(
 
 
 def tensor_based_rpq(
-        regex: str, graph: MultiDiGraph, start_nodes: set[int], final_nodes: set[int]
+    regex: str, graph: MultiDiGraph, start_nodes: set[int], final_nodes: set[int]
 ) -> set[tuple[int, int]]:
     graph_nfa = graph_to_nfa(graph, start_nodes, final_nodes)
     regex_dfa = regex_to_dfa(regex)
