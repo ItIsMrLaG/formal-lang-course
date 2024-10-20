@@ -3,6 +3,8 @@ from typing import Callable
 import networkx as nx
 import pyformlang
 
+__all__ = ["revert_cfg", "cfg_to_weak_normal_form", "hellings_based_cfpq"]
+
 
 def swap_cfg_objs(
     cfg: pyformlang.cfg.CFG,
@@ -49,7 +51,7 @@ def cfg_to_weak_normal_form(cfg: pyformlang.cfg.CFG) -> pyformlang.cfg.CFG:
     )
 
 
-def _revert_cfg(cfg: pyformlang.cfg.CFG) -> tuple[dict, dict]:
+def revert_cfg(cfg: pyformlang.cfg.CFG) -> tuple[dict, dict]:
     term_to_vars = {}  # [A -> a] to {a: {A}}
     vars_body_to_head = {}  # [A -> BC] to {BC: {A}}
     for production in cfg.productions:
@@ -73,7 +75,7 @@ def hellings_based_cfpq(
     final_nodes: set[int] = None,
 ) -> set[tuple[int, int]]:
     wcnf_cfg = cfg_to_weak_normal_form(cfg)
-    term_to_vars, vars_body_to_head = _revert_cfg(wcnf_cfg)
+    term_to_vars, vars_body_to_head = revert_cfg(wcnf_cfg)
 
     edges = {
         (v1, pyformlang.cfg.Terminal(lb), v2)
