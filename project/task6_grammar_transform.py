@@ -49,21 +49,10 @@ def cfg_to_weak_normal_form(cfg: pyformlang.cfg.CFG) -> pyformlang.cfg.CFG:
     )
 
 
-def hellings_based_cfpq(
-    cfg: pyformlang.cfg.CFG,
-    graph: nx.DiGraph,
-    start_nodes: set[int] = None,
-    final_nodes: set[int] = None,
-) -> set[tuple[int, int]]:
-    wcnf_cfg = cfg_to_weak_normal_form(cfg)
-    edges = {
-        (v1, pyformlang.cfg.Terminal(lb), v2)
-        for (v1, v2, lb) in graph.edges.data("label")
-    }
-
+def _revert_cfg(cfg: pyformlang.cfg.CFG) -> tuple[dict, dict]:
     term_to_vars = {}  # [A -> a] to {a: {A}}
     vars_body_to_head = {}  # [A -> BC] to {BC: {A}}
-    for production in wcnf_cfg.productions:
+    for production in cfg.productions:
         if len(production.body) == 2:
             vars_body_to_head.setdefault(tuple(production.body), set()).add(
                 production.head
@@ -73,6 +62,23 @@ def hellings_based_cfpq(
             production.body[0], pyformlang.cfg.Terminal
         ):
             term_to_vars.setdefault(production.body[0], set()).add(production.head)
+
+    return term_to_vars, vars_body_to_head
+
+
+def hellings_based_cfpq(
+    cfg: pyformlang.cfg.CFG,
+    graph: nx.DiGraph,
+    start_nodes: set[int] = None,
+    final_nodes: set[int] = None,
+) -> set[tuple[int, int]]:
+    wcnf_cfg = cfg_to_weak_normal_form(cfg)
+    term_to_vars, vars_body_to_head = _revert_cfg(wcnf_cfg)
+
+    edges = {
+        (v1, pyformlang.cfg.Terminal(lb), v2)
+        for (v1, v2, lb) in graph.edges.data("label")
+    }
 
     new_edges = {
         (v1, var, v2)
