@@ -1,5 +1,6 @@
 from itertools import product
-from typing import Any, Set
+from typing import Any
+from typing import Set
 
 import networkx as nx
 import pyformlang
@@ -8,6 +9,8 @@ import scipy as sp
 from project.task6_hellings_cfpq_wcnf import revert_cfg
 
 from project.task6_hellings_cfpq_wcnf import cfg_to_weak_normal_form
+
+__all__ = ["matrix_based_cfpq"]
 
 
 def matrix_based_cfpq(
