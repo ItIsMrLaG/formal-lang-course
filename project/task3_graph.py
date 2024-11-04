@@ -16,6 +16,7 @@ __all__ = [
     "AdjacencyMatrixFA",
     "tensor_based_rpq",
     "intersect_automata",
+    "get_edges_from_fa",
 ]
 
 from project.task2_regex_utils import regex_to_dfa
@@ -151,6 +152,14 @@ class AdjacencyMatrixFA:
 
     def is_empty(self) -> bool:
         return not self.get_start_final()
+
+    def update_bool_decompress(self, delta: dict[Symbol, sp.sparse.csc_matrix]):
+        for var, matrix in delta.items():
+            if var in self.adj_bool_decompress:
+                self.adj_bool_decompress[var] += matrix
+            else:
+                self.alphabet.add(var)
+                self.adj_bool_decompress[var] = matrix
 
 
 def intersect_automata(
