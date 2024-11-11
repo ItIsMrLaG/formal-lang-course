@@ -91,7 +91,7 @@ def get_graph_from_node_edges(g: nx.Graph, from_nd: Any) -> dict[Symbol, set[Any
 
 
 def get_rsm_from_state_edges(
-        rsm: pyformlang.rsa.RecursiveAutomaton, from_st: RsmState
+    rsm: pyformlang.rsa.RecursiveAutomaton, from_st: RsmState
 ) -> dict[Symbol, set[RsmState]]:
     box_label = from_st.label
     dfa = rsm.get_box(box_label).dfa
@@ -111,9 +111,9 @@ def get_rsm_from_state_edges(
 
 
 def _gss_eval_rule(
-        cfg: Configuration,
-        rsm: pyformlang.rsa.RecursiveAutomaton,
-        graph: nx.DiGraph,
+    cfg: Configuration,
+    rsm: pyformlang.rsa.RecursiveAutomaton,
+    graph: nx.DiGraph,
 ) -> set[Configuration]:
     rsm_to_states: dict[Symbol, set[RsmState]] = get_rsm_from_state_edges(
         rsm, cfg.rsm_state
@@ -132,9 +132,9 @@ def _gss_eval_rule(
 
 
 def _gss_call_rule(
-        cfg: Configuration,
-        rsm: pyformlang.rsa.RecursiveAutomaton,
-        gss_graph: nx.MultiDiGraph,
+    cfg: Configuration,
+    rsm: pyformlang.rsa.RecursiveAutomaton,
+    gss_graph: nx.MultiDiGraph,
 ) -> set[Configuration]:
     rsm_to_states: dict[Symbol, set[RsmState]] = get_rsm_from_state_edges(
         rsm, cfg.rsm_state
@@ -149,11 +149,11 @@ def _gss_call_rule(
             new_gss_node = GssNode(new_rsm_state, cfg.graph_node)
 
             if (
-                    new_gss_node in gss_graph.nodes
-                    and gss_graph.nodes[new_gss_node]["pop_set"]
+                new_gss_node in gss_graph.nodes
+                and gss_graph.nodes[new_gss_node]["pop_set"]
             ):
                 for rsm_to_state, g_node in itertools.product(
-                        rsm_to_states[non_term], gss_graph.nodes[new_gss_node]["pop_set"]
+                    rsm_to_states[non_term], gss_graph.nodes[new_gss_node]["pop_set"]
                 ):
                     gss_graph.add_edge(new_gss_node, cfg.gss_node, label=rsm_to_state)
                     ans.add(Configuration(rsm_to_state, g_node, cfg.gss_node))
@@ -167,10 +167,10 @@ def _gss_call_rule(
 
 
 def _gss_return_rule(
-        cfg: Configuration,
-        rsm: pyformlang.rsa.RecursiveAutomaton,
-        gss_graph: nx.MultiDiGraph,
-        init_gss_node: GssNode,
+    cfg: Configuration,
+    rsm: pyformlang.rsa.RecursiveAutomaton,
+    gss_graph: nx.MultiDiGraph,
+    init_gss_node: GssNode,
 ) -> tuple[set[Configuration], set[tuple[int, int]]]:
     current_box_dfa = rsm.get_box(cfg.rsm_state.label).dfa
     if cfg.rsm_state.state not in current_box_dfa.final_states:
@@ -196,10 +196,10 @@ def _gss_return_rule(
 
 
 def gll_based_cfpq(
-        rsm: pyformlang.rsa.RecursiveAutomaton,
-        graph: nx.DiGraph,
-        start_nodes: set[int] = None,
-        final_nodes: set[int] = None,
+    rsm: pyformlang.rsa.RecursiveAutomaton,
+    graph: nx.DiGraph,
+    start_nodes: set[int] = None,
+    final_nodes: set[int] = None,
 ) -> set[tuple[int, int]]:
     gss_graph = nx.MultiDiGraph()
     processed: set[Configuration] = set()
