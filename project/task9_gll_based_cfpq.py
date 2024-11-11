@@ -1,5 +1,6 @@
 import itertools
-from typing import Any, Iterable
+from typing import Any
+from typing import Iterable
 from pyformlang.finite_automaton import Symbol
 from pyformlang.finite_automaton import State
 
